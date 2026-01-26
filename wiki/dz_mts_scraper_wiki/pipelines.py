@@ -10,4 +10,5 @@ from itemadapter import ItemAdapter
 
 class DzMtsScraperWikiPipeline:
     def process_item(self, item, spider):
+        item['id_imdb'] = item['id_imdb'][10:]
         return item

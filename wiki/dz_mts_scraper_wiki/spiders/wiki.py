@@ -15,7 +15,7 @@ class WikiSpider(scrapy.Spider):
                 yield response.follow(
                     film_page,
                     callback=self.parse_film_info,
-                    meta={'film_name': film_name}
+                    meta={'name': film_name}
                 )
             else: 
                 yield film_name
@@ -29,7 +29,7 @@ class WikiSpider(scrapy.Spider):
     def parse_film_info(self, response):
         item = FilmItem()
 
-        item['film_name'] = response.meta.get('film_name', 'Unknown')
+        item['name'] = response.meta.get('name', 'Unknown')
     
         selector_genre = response.css('span[data-wikidata-property-id="P136"]')
         item['genre'] = selector_genre.css('a::attr(title)').get()
@@ -39,6 +39,9 @@ class WikiSpider(scrapy.Spider):
     
         selector_county = response.css('span[data-wikidata-property-id="P495"]')
         item['country'] = selector_county.css('a::attr(title)').get()
+
+        selector_id_imdb = response.css('span[data-wikidata-property-id="P345"]')
+        item['id_imdb'] = selector_id_imdb.css('a::attr(title)').get()
     
     
         selector_year = response.css('tbody tr:contains("Год")')

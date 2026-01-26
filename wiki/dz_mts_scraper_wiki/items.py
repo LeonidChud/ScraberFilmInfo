@@ -7,8 +7,10 @@ import scrapy
 
 
 class FilmItem(scrapy.Item):
-    film_name = scrapy.Field()
+    name = scrapy.Field()
     genre = scrapy.Field()
     director = scrapy.Field()
     country = scrapy.Field()
     year = scrapy.Field()
+    id_imdb = scrapy.Field()
+
