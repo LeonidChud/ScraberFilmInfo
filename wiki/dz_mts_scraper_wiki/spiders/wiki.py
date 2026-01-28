@@ -28,22 +28,27 @@ class WikiSpider(scrapy.Spider):
 
     def parse_film_info(self, response):
         item = FilmItem()
-
+        
+        # название
         item['name'] = response.meta.get('name', 'Unknown')
-    
+
+        # жанр
         selector_genre = response.css('span[data-wikidata-property-id="P136"]')
         item['genre'] = selector_genre.css('a::attr(title)').get()
-    
+
+        # режессёр
         selector_director = response.css('span[data-wikidata-property-id="P57"]')
         item['director'] = selector_director.css('a::attr(title)').get()
-    
+
+        # страна
         selector_county = response.css('span[data-wikidata-property-id="P495"]')
         item['country'] = selector_county.css('a::attr(title)').get()
 
+        # id_imdb (хотел использовать для доп задания, но что-то не пошло, может позже снова попрубую)
         selector_id_imdb = response.css('span[data-wikidata-property-id="P345"]')
         item['id_imdb'] = selector_id_imdb.css('a::attr(title)').get()
     
-    
+        # год
         selector_year = response.css('tbody tr:contains("Год")')
         if selector_year:
             item['year'] = selector_year.css('span.dtstart::text').get()
